@@ -8,7 +8,12 @@ import Register from '@/views/Register'
 import VerifyEmail from '@/views/VerifyEmail'
 import ForgotPassword from '@/views/ForgotPassword'
 import ResetPassword from '@/views/ResetPassword'
+import Profile from '@/views/Profile';
+import NotFound from '@/views/404';
+import Todo from '@/views/Todo'
 import Guard from '@/service/middleware';
+import Logout from '@/components/Auth/Logout';
+
 Vue.use(VueRouter);
 
 const routes = [
@@ -28,8 +33,9 @@ const routes = [
     },
     {
         path: '/register', component: LayoutAuth,
+        beforeEnter: Guard.redirectIfAuthenticated,
         children: [
-            { path: '', name: 'register', component: Register }
+            { path: '', name: 'register', component: Register },
         ],
     },
     {
@@ -40,6 +46,7 @@ const routes = [
     },
     {
         path: '/forgot-password', component: LayoutAuth,
+        beforeEnter: Guard.redirectIfAuthenticated,
         children: [
             { path: '', name: 'forgotPassword', component: ForgotPassword }
         ]
@@ -49,7 +56,36 @@ const routes = [
         children: [
             { path: '', name: 'resetPassword', component: ResetPassword }
         ]
+    },
+    {
+        path: '/profile', component: layoutDefault,
+        beforeEnter: Guard.redirectIfNotAuthenticated,
+        children: [
+            { 
+                path: '', name: 'profile', component: Profile,
+            }
+        ]
+    },
+    {
+        path: '/logout', name: 'logout', component: Logout,
+        beforeEnter: Guard.redirectIfNotAuthenticated,
+    },
+
+    {
+        path: '/todo/:todoId', component: layoutDefault,
+        beforeEnter: Guard.redirectIfNotAuthenticated,
+        children: [
+            { path: '', name: 'todo', component: Todo }
+        ]
+    },
+    {
+        path: '*', component: layoutDefault,
+        beforeEnter: Guard.redirectIfNotAuthenticated,
+        children: [
+            { path: '', name: '404', component: NotFound}
+        ]
     }
+
 ];
 
 const router = new VueRouter({

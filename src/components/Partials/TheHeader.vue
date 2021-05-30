@@ -1,6 +1,9 @@
 <template>
-    <div class="flex items-center justify-between h-13 bg-gray-900 px-5">
-        <div class="flex items-center">
+    <div class="flex items-center justify-between h-14 bg-gray-900 px-5">
+        <router-link 
+            class="flex items-center"
+            :to="{name: 'home'}"
+        >
             <svg
                 class="h-6 w-6 text-blue-500"
                 viewBox="0 0 20 20"
@@ -17,7 +20,7 @@
             </svg>
 
             <span class="text-gray-500 ml-2">Todo list</span>
-        </div>
+        </router-link>
 
         <div class="flex items-center">
             <TwDropdown
